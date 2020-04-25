@@ -1,75 +1,949 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com" target="_blank"> documentation </a>.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
+  <v-card
+    max-height="400px"
+    style="overflow-y: auto; overflow-x: auto; white-space: nowrap"
+  >
+    <v-card-text>
+      <v-row no-gutters>
+        <v-col>
+          <div style="z-index: 10; position: absolute; background-color:white">
+            <div
+              v-for="(s, i) in schedule"
+              :key="i"
+              style="width: 200px;height: 40px; display: flex; align-items: center"
             >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
+              <span class="text--primary d-inline-block text-truncate">{{
+                schedule[i].name
+              }}</span>
+            </div>
           </div>
-          <hr class="my-3" />
-          <a href="https://nuxtjs.org/" target="_blank">
-            Nuxt Documentation
-          </a>
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+          <div style="position: relative; left: 200px">
+            <div v-for="(s, i) in schedule" :key="i">
+              <span v-for="(h, j) in fHeader" :key="j">
+                <v-btn
+                  height="40px"
+                  width="40px"
+                  rounded
+                  depressed
+                  small
+                  :color="active(j + 1, i) ? 'teal' : 'white'"
+                  :dark="active(j + 1, i)"
+                  @click="ranged(j + 1, i)"
+                  >{{ schedule[i][h] }}</v-btn
+                >
+              </span>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  layout: 'blank',
+  data() {
+    return {
+      header: [
+        'name',
+        'day1',
+        'day2',
+        'day3',
+        'day4',
+        'day5',
+        'day6',
+        'day7',
+        'day8',
+        'day9',
+        'day10',
+        'day11',
+        'day12',
+        'day13',
+        'day14',
+        'day15',
+        'day16',
+        'day17',
+        'day18',
+        'day19',
+        'day20',
+        'day21',
+        'day22',
+        'day23',
+        'day24',
+        'day25',
+        'day26',
+        'day27',
+        'day28',
+        'day29',
+        'day30'
+      ],
+      schedule1: [
+        {
+          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Laksita Kusuma Wardhani',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Yulia Dini Hakiki',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Raissa Almira Rachmayanti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Lidya Puji Astuti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        }
+      ],
+      schedule: [
+        {
+          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Laksita Kusuma Wardhani',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Yulia Dini Hakiki',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Raissa Almira Rachmayanti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Lidya Puji Astuti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Laksita Kusuma Wardhani',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Yulia Dini Hakiki',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Raissa Almira Rachmayanti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Lidya Puji Astuti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Laksita Kusuma Wardhani',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Yulia Dini Hakiki',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Raissa Almira Rachmayanti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Lidya Puji Astuti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Laksita Kusuma Wardhani',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Yulia Dini Hakiki',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Raissa Almira Rachmayanti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        },
+        {
+          name: 'Lidya Puji Astuti',
+          day1: 1,
+          day2: 2,
+          day3: 3,
+          day4: 4,
+          day5: 5,
+          day6: 6,
+          day7: 7,
+          day8: 8,
+          day9: 9,
+          day10: 10,
+          day11: 11,
+          day12: 12,
+          day13: 13,
+          day14: 14,
+          day15: 15,
+          day16: 16,
+          day17: 17,
+          day18: 18,
+          day19: 19,
+          day20: 20,
+          day21: 21,
+          day22: 22,
+          day23: 23,
+          day24: 24,
+          day25: 25,
+          day26: 26,
+          day27: 27,
+          day28: 28,
+          day29: 29,
+          day30: 30
+        }
+      ],
+      day: [],
+      staff: undefined
+    }
+  },
+  computed: {
+    fHeader() {
+      return this.header.filter((h) => h !== 'name')
+    }
+  },
+  methods: {
+    ranged(day, staff) {
+      if (
+        this.day.length === 0 ||
+        this.day.length === 2 ||
+        this.staff !== staff
+      ) {
+        this.staff = staff
+        this.day = [day]
+      } else if (this.day[0] < day) {
+        this.day.push(day)
+      } else if (this.day[0] > day) {
+        this.day.unshift(day)
+      } else {
+        this.day = []
+      }
+    },
+    active(day, staff) {
+      if (
+        this.staff === staff &&
+        (day === this.day[0] || (day > this.day[0] && day <= this.day[1]))
+      ) {
+        return true
+      }
+      return false
+    }
   }
 }
 </script>
+
+<style scoped></style>
