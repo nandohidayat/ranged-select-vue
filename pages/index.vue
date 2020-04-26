@@ -2,7 +2,6 @@
   <v-card
     max-height="400px"
     style="overflow-y: auto; overflow-x: auto; white-space: nowrap"
-    @scroll="scroll"
   >
     <div
       :style="{
@@ -16,15 +15,19 @@
       }"
       class="shadow"
     >
-      <div
-        v-for="(s, i) in schedule"
-        :key="i"
-        style="width: 200px;height: 40px; display: flex; align-items: center"
-        class="px-3"
-      >
-        <span class="subtitle-2 d-inline-block text-truncate ">{{
-          schedule[i].name
-        }}</span>
+      <div v-for="(s, i) in schedule" :key="i">
+        <v-btn
+          height="40"
+          width="200"
+          depressed
+          small
+          tile
+          color="white"
+          class="text-truncate d-block justify-start"
+          @click="name(i)"
+        >
+          {{ schedule[i].name }}
+        </v-btn>
       </div>
     </div>
     <div class="d-inline-block">
@@ -950,8 +953,14 @@ export default {
       }
       return false
     },
-    scroll(event) {
-      this.left = event.target.scrollLeft
+    name(staff) {
+      if (this.staff !== undefined && this.staff === staff) {
+        this.day = []
+        this.staff = undefined
+      } else {
+        this.staff = staff
+        this.day = [1, this.header.length - 1]
+      }
     }
   }
 }
