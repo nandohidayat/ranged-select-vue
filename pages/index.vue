@@ -2,41 +2,48 @@
   <v-card
     max-height="400px"
     style="overflow-y: auto; overflow-x: auto; white-space: nowrap"
+    @scroll="scroll"
   >
-    <v-card-text>
-      <v-row no-gutters>
-        <v-col>
-          <div style="z-index: 10; position: absolute; background-color:white">
-            <div
-              v-for="(s, i) in schedule"
-              :key="i"
-              style="width: 200px;height: 40px; display: flex; align-items: center"
-            >
-              <span class="text--primary d-inline-block text-truncate">{{
-                schedule[i].name
-              }}</span>
-            </div>
-          </div>
-          <div style="position: relative; left: 200px">
-            <div v-for="(s, i) in schedule" :key="i">
-              <span v-for="(h, j) in fHeader" :key="j">
-                <v-btn
-                  height="40px"
-                  width="40px"
-                  rounded
-                  depressed
-                  small
-                  :color="active(j + 1, i) ? 'teal' : 'white'"
-                  :dark="active(j + 1, i)"
-                  @click="ranged(j + 1, i)"
-                  >{{ schedule[i][h] }}</v-btn
-                >
-              </span>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-    </v-card-text>
+    <div
+      :style="{
+        zIndex: 10,
+        position: 'sticky',
+        backgroundColor: 'white',
+        left: 0,
+        display: 'inline-block',
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0
+      }"
+      class="shadow"
+    >
+      <div
+        v-for="(s, i) in schedule"
+        :key="i"
+        style="width: 200px;height: 40px; display: flex; align-items: center"
+        class="px-3"
+      >
+        <span class="subtitle-2 d-inline-block text-truncate ">{{
+          schedule[i].name
+        }}</span>
+      </div>
+    </div>
+    <div class="d-inline-block">
+      <div v-for="(s, i) in schedule" :key="i">
+        <span v-for="(h, j) in fHeader" :key="j">
+          <v-btn
+            height="40px"
+            width="40px"
+            rounded
+            depressed
+            small
+            :color="active(j + 1, i) ? 'teal' : 'white'"
+            :dark="active(j + 1, i)"
+            @click="ranged(j + 1, i)"
+            >{{ schedule[i][h] }}</v-btn
+          >
+        </span>
+      </div>
+    </div>
   </v-card>
 </template>
 
@@ -908,7 +915,8 @@ export default {
         }
       ],
       day: [],
-      staff: undefined
+      staff: undefined,
+      left: 0
     }
   },
   computed: {
@@ -941,9 +949,18 @@ export default {
         return true
       }
       return false
+    },
+    scroll(event) {
+      this.left = event.target.scrollLeft
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.shadow {
+  -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+}
+</style>
