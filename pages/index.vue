@@ -1,54 +1,77 @@
 <template>
   <v-card
     max-height="400px"
-    style="overflow-y: auto; overflow-x: auto; white-space: nowrap"
+    style="overflow-y: auto; overflow-x: auto; white-space: nowrap; position: relative"
   >
-    <div
-      :style="{
-        zIndex: 10,
-        position: 'sticky',
-        backgroundColor: 'white',
-        left: 0,
-        display: 'inline-block',
-        borderTopRightRadius: 0,
-        borderTopLeftRadius: 0
-      }"
-      class="shadow"
-    >
-      <div v-for="(s, i) in schedule" :key="i">
-        <v-btn
-          height="40"
-          width="200"
-          depressed
-          small
-          tile
-          color="white"
-          class="justify-start"
-          @click="nameClick(i)"
-        >
-          <span class="d-inline-block text-truncate" style="max-width: 180px;">
-            {{ schedule[i].name }}
-          </span>
-        </v-btn>
-        <v-divider></v-divider>
-      </div>
-    </div>
-    <div class="d-inline-block">
-      <div v-for="(s, i) in schedule" :key="i">
-        <span v-for="(h, j) in fHeader" :key="j">
+    <div>
+      <div
+        :style="{
+          zIndex: 10,
+          position: 'sticky',
+          backgroundColor: 'white',
+          left: 0,
+          display: 'inline-block'
+        }"
+        class="shadow"
+      >
+        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
+          <v-btn height="40" width="200" depressed small tile color="white">
+            Nama
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(s, i) in schedule" :key="i">
           <v-btn
-            height="40px"
-            width="40px"
-            rounded
+            height="40"
+            width="200"
             depressed
             small
-            :color="active(j + 1, i) ? 'teal' : 'white'"
-            :dark="active(j + 1, i)"
-            @click="ranged(j + 1, i)"
-            >{{ schedule[i][h] }}</v-btn
+            tile
+            color="white"
+            class="justify-start"
+            @click="nameClick(i)"
           >
-        </span>
-        <v-divider></v-divider>
+            <span
+              class="d-inline-block text-truncate"
+              style="max-width: 180px;"
+            >
+              {{ schedule[i].name }}
+            </span>
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+      </div>
+      <div class="d-inline-block">
+        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+          <span v-for="(h, j) in fHeader" :key="j">
+            <v-btn
+              height="40px"
+              width="40px"
+              tile
+              depressed
+              small
+              color="white"
+              >{{ j + 1 }}</v-btn
+            >
+          </span>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(s, i) in schedule" :key="i">
+          <span v-for="(h, j) in fHeader" :key="j">
+            <v-btn
+              height="40px"
+              width="40px"
+              rounded
+              depressed
+              small
+              :color="active(j + 1, i) ? 'teal' : 'white'"
+              :dark="active(j + 1, i)"
+              @click="ranged(j + 1, i)"
+              >{{ schedule[i][h] }}</v-btn
+            >
+          </span>
+          <v-divider></v-divider>
+        </div>
       </div>
     </div>
   </v-card>
