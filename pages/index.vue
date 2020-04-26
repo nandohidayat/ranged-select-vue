@@ -23,11 +23,14 @@
           small
           tile
           color="white"
-          class="text-truncate d-block justify-start"
-          @click="name(i)"
+          class="justify-start"
+          @click="nameClick(i)"
         >
-          {{ schedule[i].name }}
+          <span class="d-inline-block text-truncate" style="max-width: 180px;">
+            {{ schedule[i].name }}
+          </span>
         </v-btn>
+        <v-divider></v-divider>
       </div>
     </div>
     <div class="d-inline-block">
@@ -45,6 +48,7 @@
             >{{ schedule[i][h] }}</v-btn
           >
         </span>
+        <v-divider></v-divider>
       </div>
     </div>
   </v-card>
@@ -941,6 +945,7 @@ export default {
       } else if (this.day[0] > day) {
         this.day.unshift(day)
       } else {
+        this.staff = undefined
         this.day = []
       }
     },
@@ -953,7 +958,7 @@ export default {
       }
       return false
     },
-    name(staff) {
+    nameClick(staff) {
       if (this.staff !== undefined && this.staff === staff) {
         this.day = []
         this.staff = undefined
