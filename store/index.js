@@ -32,6 +32,13 @@ export const state = () => ({
     'day29',
     'day30'
   ],
+  name: [
+    'Muhammad Nando Hidayat',
+    'Laksita Kusuma Wardhani',
+    'Yulia Dini Hakiki',
+    'Raissa Almira Rachmayanti',
+    'Lidya Puji Astuti'
+  ],
   schedule1: [
     {
       name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',

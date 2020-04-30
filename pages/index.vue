@@ -18,7 +18,7 @@
         </v-btn>
         <v-divider></v-divider>
       </div>
-      <div v-for="(s, i) in $store.state.schedule" :key="i">
+      <div v-for="(s, i) in $store.state.schedule1" :key="i">
         <v-btn
           height="40"
           width="200"
@@ -52,7 +52,7 @@
         </span>
         <v-divider></v-divider>
       </div>
-      <div v-for="(s, i) in $store.state.schedule" :key="i">
+      <div v-for="(s, i) in $store.state.schedule1" :key="i">
         <span v-for="(h, j) in fHeader" :key="j">
           <v-btn
             height="40px"
@@ -60,7 +60,7 @@
             rounded
             depressed
             small
-            :color="active(j + 1, i) ? 'teal lighten-3' : 'white'"
+            :color="active(j + 1, i) ? 'grey lighten-2' : 'white'"
             @click="ranged(j + 1, i)"
             @click.stop="showMenu"
             >{{ displayShift($store.state.schedule[i][h]) }}</v-btn
@@ -78,6 +78,7 @@
       :close-on-click="false"
       :close-on-content-click="false"
       z-index="13"
+      @keypress.delete="menu = false"
     >
       <v-list>
         <v-list-item
@@ -112,7 +113,7 @@ export default {
       return this.$store.state.header.filter((h) => h !== 'name')
     },
     fShift() {
-      return [...this.$store.state.shift, { id: undefined, kode: undefined }]
+      return [{ id: undefined, kode: undefined }, ...this.$store.state.shift]
     }
   },
   methods: {
