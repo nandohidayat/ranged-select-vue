@@ -46,7 +46,7 @@
             tile
             depressed
             small
-            color="white"
+            :color="dayColor(j + 1)"
             >{{ j + 1 }}</v-btn
           >
         </span>
@@ -60,8 +60,7 @@
             rounded
             depressed
             small
-            :color="active(j + 1, i) ? 'teal' : 'white'"
-            :dark="active(j + 1, i)"
+            :color="active(j + 1, i) ? 'teal lighten-3' : 'white'"
             @click="ranged(j + 1, i)"
             @click.stop="showMenu"
             >{{ displayShift($store.state.schedule[i][h]) }}</v-btn
@@ -176,6 +175,11 @@ export default {
       return this.$store.state.shift.find(
         (s) => parseInt(s.id) === parseInt(id)
       ).kode
+    },
+    dayColor(d) {
+      if (this.$store.state.weekend.includes(d)) return 'red'
+      if (this.$store.state.holiday.includes(d)) return 'red lighten-3'
+      return 'white'
     }
   }
 }
