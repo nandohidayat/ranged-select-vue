@@ -77,6 +77,7 @@
       absolute
       offset-y
       :close-on-click="false"
+      :close-on-content-click="false"
       z-index="13"
     >
       <v-list>
@@ -152,7 +153,7 @@ export default {
       }
     },
     showMenu(e) {
-      e.preventDefault()
+      if (this.staff === undefined) return (this.menu = false)
       this.menu = true
       this.x = e.clientX
       this.y = e.clientY
