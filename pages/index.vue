@@ -18,7 +18,7 @@
         </v-btn>
         <v-divider></v-divider>
       </div>
-      <div v-for="(s, i) in $store.state.schedule1" :key="i">
+      <div v-for="(n, i) in $store.state.name" :key="i">
         <v-btn
           height="40"
           width="200"
@@ -26,12 +26,14 @@
           small
           tile
           color="white"
-          class="justify-start"
           @click="nameClick(i)"
           @click.stop="showMenu"
         >
-          <span class="d-inline-block text-truncate" style="max-width: 180px;">
-            {{ $store.state.schedule[i].name }}
+          <span
+            class="d-inline-block text-truncate text-left"
+            style="width: 180px;"
+          >
+            {{ n }}
           </span>
         </v-btn>
         <v-divider></v-divider>
@@ -39,31 +41,31 @@
     </div>
     <div class="d-inline-block">
       <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-        <span v-for="(h, j) in fHeader" :key="j">
+        <span v-for="d in $store.state.day" :key="d">
           <v-btn
             height="40px"
             width="40px"
             tile
             depressed
             small
-            :color="dayColor(j + 1)"
-            >{{ j + 1 }}</v-btn
+            :color="dayColor(d)"
+            >{{ d }}</v-btn
           >
         </span>
         <v-divider></v-divider>
       </div>
-      <div v-for="(s, i) in $store.state.schedule1" :key="i">
-        <span v-for="(h, j) in fHeader" :key="j">
+      <div v-for="(schedule, i) in $store.state.schedule" :key="i">
+        <span v-for="(s, j) in schedule" :key="j">
           <v-btn
             height="40px"
             width="40px"
             rounded
             depressed
             small
-            :color="active(j + 1, i) ? 'grey lighten-2' : 'white'"
-            @click="ranged(j + 1, i)"
+            :color="active(j, i) ? 'grey lighten-2' : 'white'"
+            @click="ranged(j, i)"
             @click.stop="showMenu"
-            >{{ displayShift($store.state.schedule[i][h]) }}</v-btn
+            >{{ displayShift(s) }}</v-btn
           >
         </span>
         <v-divider></v-divider>
@@ -109,9 +111,6 @@ export default {
     }
   },
   computed: {
-    fHeader() {
-      return this.$store.state.header.filter((h) => h !== 'name')
-    },
     fShift() {
       return [{ id: undefined, kode: undefined }, ...this.$store.state.shift]
     }
@@ -149,7 +148,7 @@ export default {
         this.staff = undefined
       } else {
         this.staff = staff
-        this.day = [1, this.$store.state.header.length - 1]
+        this.day = [0, this.$store.state.day - 1]
       }
     },
     showMenu(e) {
