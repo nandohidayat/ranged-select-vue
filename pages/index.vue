@@ -64,7 +64,7 @@
             :dark="active(j + 1, i)"
             @click="ranged(j + 1, i)"
             @click.stop="showMenu"
-            >{{ $store.state.schedule[i][h] }}</v-btn
+            >{{ displayShift($store.state.schedule[i][h]) }}</v-btn
           >
         </span>
         <v-divider></v-divider>
@@ -169,6 +169,12 @@ export default {
       this.menu = false
       this.staff = undefined
       this.day = []
+    },
+    displayShift(id) {
+      if (id === undefined) return
+      return this.$store.state.shift.find(
+        (s) => parseInt(s.id) === parseInt(id)
+      ).kode
     }
   }
 }
