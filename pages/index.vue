@@ -1,79 +1,97 @@
 <template>
   <v-card
     max-height="400px"
-    style="overflow-y: auto; overflow-x: auto; white-space: nowrap; position: relative"
+    style="overflow-y: auto; overflow-x: auto; white-space: nowrap;"
   >
-    <div>
-      <div
-        :style="{
-          zIndex: 10,
-          position: 'sticky',
-          backgroundColor: 'white',
-          left: 0,
-          display: 'inline-block'
-        }"
-        class="shadow"
-      >
-        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
-          <v-btn height="40" width="200" depressed small tile color="white">
-            Nama
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(s, i) in schedule" :key="i">
-          <v-btn
-            height="40"
-            width="200"
-            depressed
-            small
-            tile
-            color="white"
-            class="justify-start"
-            @click="nameClick(i)"
-          >
-            <span
-              class="d-inline-block text-truncate"
-              style="max-width: 180px;"
-            >
-              {{ schedule[i].name }}
-            </span>
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
+    <div
+      :style="{
+        zIndex: 10,
+        position: 'sticky',
+        backgroundColor: 'white',
+        left: 0
+      }"
+      class="shadow d-inline-block"
+    >
+      <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
+        <v-btn height="40" width="200" depressed small tile color="white">
+          Nama
+        </v-btn>
+        <v-divider></v-divider>
       </div>
-      <div class="d-inline-block">
-        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <span v-for="(h, j) in fHeader" :key="j">
-            <v-btn
-              height="40px"
-              width="40px"
-              tile
-              depressed
-              small
-              color="white"
-              >{{ j + 1 }}</v-btn
-            >
+      <div v-for="(s, i) in $store.state.schedule" :key="i">
+        <v-btn
+          height="40"
+          width="200"
+          depressed
+          small
+          tile
+          color="white"
+          class="justify-start"
+          @click="nameClick(i)"
+          @click.stop="showMenu"
+        >
+          <span class="d-inline-block text-truncate" style="max-width: 180px;">
+            {{ $store.state.schedule[i].name }}
           </span>
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(s, i) in schedule" :key="i">
-          <span v-for="(h, j) in fHeader" :key="j">
-            <v-btn
-              height="40px"
-              width="40px"
-              rounded
-              depressed
-              small
-              :color="active(j + 1, i) ? 'teal' : 'white'"
-              :dark="active(j + 1, i)"
-              @click="ranged(j + 1, i)"
-              >{{ schedule[i][h] }}</v-btn
-            >
-          </span>
-          <v-divider></v-divider>
-        </div>
+        </v-btn>
+        <v-divider></v-divider>
       </div>
     </div>
+    <div class="d-inline-block">
+      <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+        <span v-for="(h, j) in fHeader" :key="j">
+          <v-btn
+            height="40px"
+            width="40px"
+            tile
+            depressed
+            small
+            color="white"
+            >{{ j + 1 }}</v-btn
+          >
+        </span>
+        <v-divider></v-divider>
+      </div>
+      <div v-for="(s, i) in $store.state.schedule" :key="i">
+        <span v-for="(h, j) in fHeader" :key="j">
+          <v-btn
+            height="40px"
+            width="40px"
+            rounded
+            depressed
+            small
+            :color="active(j + 1, i) ? 'teal' : 'white'"
+            :dark="active(j + 1, i)"
+            @click="ranged(j + 1, i)"
+            @click.stop="showMenu"
+            >{{ $store.state.schedule[i][h] }}</v-btn
+          >
+        </span>
+        <v-divider></v-divider>
+      </div>
+    </div>
+    <v-menu
+      v-model="menu"
+      :position-x="x"
+      :position-y="y"
+      absolute
+      offset-y
+      :close-on-click="false"
+      z-index="13"
+    >
+      <v-list>
+        <v-list-item
+          v-for="(s, i) in $store.state.shift"
+          :key="i"
+          @click="updateSchedule(s.id)"
+        >
+          <v-list-item-title>{{ s.kode }}</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="reset()"
+          ><v-icon color="error">mdi-close</v-icon></v-list-item
+        >
+      </v-list>
+    </v-menu>
   </v-card>
 </template>
 
@@ -82,876 +100,16 @@ export default {
   layout: 'blank',
   data() {
     return {
-      header: [
-        'name',
-        'day1',
-        'day2',
-        'day3',
-        'day4',
-        'day5',
-        'day6',
-        'day7',
-        'day8',
-        'day9',
-        'day10',
-        'day11',
-        'day12',
-        'day13',
-        'day14',
-        'day15',
-        'day16',
-        'day17',
-        'day18',
-        'day19',
-        'day20',
-        'day21',
-        'day22',
-        'day23',
-        'day24',
-        'day25',
-        'day26',
-        'day27',
-        'day28',
-        'day29',
-        'day30'
-      ],
-      schedule1: [
-        {
-          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Laksita Kusuma Wardhani',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Yulia Dini Hakiki',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Raissa Almira Rachmayanti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Lidya Puji Astuti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        }
-      ],
-      schedule: [
-        {
-          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Laksita Kusuma Wardhani',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Yulia Dini Hakiki',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Raissa Almira Rachmayanti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Lidya Puji Astuti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Laksita Kusuma Wardhani',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Yulia Dini Hakiki',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Raissa Almira Rachmayanti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Lidya Puji Astuti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Laksita Kusuma Wardhani',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Yulia Dini Hakiki',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Raissa Almira Rachmayanti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Lidya Puji Astuti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Muhammad Nando Hidayat Muhammad Nando Hidayat',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Laksita Kusuma Wardhani',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Yulia Dini Hakiki',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Raissa Almira Rachmayanti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        },
-        {
-          name: 'Lidya Puji Astuti',
-          day1: 1,
-          day2: 2,
-          day3: 3,
-          day4: 4,
-          day5: 5,
-          day6: 6,
-          day7: 7,
-          day8: 8,
-          day9: 9,
-          day10: 10,
-          day11: 11,
-          day12: 12,
-          day13: 13,
-          day14: 14,
-          day15: 15,
-          day16: 16,
-          day17: 17,
-          day18: 18,
-          day19: 19,
-          day20: 20,
-          day21: 21,
-          day22: 22,
-          day23: 23,
-          day24: 24,
-          day25: 25,
-          day26: 26,
-          day27: 27,
-          day28: 28,
-          day29: 29,
-          day30: 30
-        }
-      ],
       day: [],
       staff: undefined,
-      left: 0
+      menu: false,
+      x: 0,
+      y: 0
     }
   },
   computed: {
     fHeader() {
-      return this.header.filter((h) => h !== 'name')
+      return this.$store.state.header.filter((h) => h !== 'name')
     }
   },
   methods: {
@@ -987,8 +145,27 @@ export default {
         this.staff = undefined
       } else {
         this.staff = staff
-        this.day = [1, this.header.length - 1]
+        this.day = [1, this.$store.state.header.length - 1]
       }
+    },
+    showMenu(e) {
+      e.preventDefault()
+      this.menu = true
+      this.x = e.clientX
+      this.y = e.clientY
+    },
+    updateSchedule(s) {
+      this.$store.commit('updateSchedule', {
+        staff: this.staff,
+        day: this.day,
+        shift: s
+      })
+      this.reset()
+    },
+    reset() {
+      this.menu = false
+      this.staff = undefined
+      this.day = []
     }
   }
 }
