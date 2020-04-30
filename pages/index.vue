@@ -81,7 +81,7 @@
     >
       <v-list>
         <v-list-item
-          v-for="(s, i) in $store.state.shift"
+          v-for="(s, i) in fShift"
           :key="i"
           @click="updateSchedule(s.id)"
         >
@@ -110,6 +110,9 @@ export default {
   computed: {
     fHeader() {
       return this.$store.state.header.filter((h) => h !== 'name')
+    },
+    fShift() {
+      return [...this.$store.state.shift, { id: undefined, kode: undefined }]
     }
   },
   methods: {
