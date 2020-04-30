@@ -1,100 +1,125 @@
 <template>
-  <v-card
-    max-height="400px"
-    style="overflow-y: auto; overflow-x: auto; white-space: nowrap;"
-  >
+  <v-card raised>
     <div
-      :style="{
-        zIndex: 10,
-        position: 'sticky',
-        backgroundColor: 'white',
-        left: 0
-      }"
-      class="shadow d-inline-block"
+      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 400px"
     >
-      <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
-        <v-btn height="40" width="200" depressed small tile color="white">
-          Nama
-        </v-btn>
-        <v-divider></v-divider>
-      </div>
-      <div v-for="(n, i) in $store.state.name" :key="i">
-        <v-btn
-          height="40"
-          width="200"
-          depressed
-          small
-          tile
-          color="white"
-          @click="nameClick(i)"
-          @click.stop="showMenu"
-        >
-          <span
-            class="d-inline-block text-truncate text-left"
-            style="width: 180px;"
-          >
-            {{ n }}
-          </span>
-        </v-btn>
-        <v-divider></v-divider>
-      </div>
-    </div>
-    <div class="d-inline-block">
-      <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-        <span v-for="d in $store.state.day" :key="d">
+      <div
+        :style="{
+          zIndex: 10,
+          position: 'sticky',
+          backgroundColor: 'white',
+          left: 0
+        }"
+        class="shadow d-inline-block"
+      >
+        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
+          <v-btn height="40" width="200" depressed small tile color="white">
+            Nama
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(n, i) in $store.state.name" :key="i">
           <v-btn
-            height="40px"
-            width="40px"
+            height="40"
+            width="200"
+            depressed
+            small
             tile
-            depressed
-            small
-            :color="dayColor(d)"
-            >{{ d }}</v-btn
-          >
-        </span>
-        <v-divider></v-divider>
-      </div>
-      <div v-for="(schedule, i) in $store.state.schedule" :key="i">
-        <span v-for="(s, j) in schedule" :key="j">
-          <v-btn
-            height="40px"
-            width="40px"
-            rounded
-            depressed
-            small
-            :color="active(j, i) ? 'grey lighten-2' : 'white'"
-            @click="ranged(j, i)"
+            color="white"
+            @click="nameClick(i)"
             @click.stop="showMenu"
-            >{{ displayShift(s) }}</v-btn
           >
-        </span>
-        <v-divider></v-divider>
+            <span
+              class="d-inline-block text-truncate text-left"
+              style="width: 180px;"
+            >
+              {{ n }}
+            </span>
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
       </div>
+      <div class="d-inline-block">
+        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+          <span v-for="d in $store.state.day" :key="d">
+            <v-btn
+              height="40px"
+              width="40px"
+              tile
+              depressed
+              small
+              :color="dayColor(d)"
+              >{{ d }}</v-btn
+            >
+          </span>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(schedule, i) in $store.state.schedule" :key="i">
+          <span v-for="(s, j) in schedule" :key="j">
+            <v-btn
+              height="40px"
+              width="40px"
+              rounded
+              depressed
+              small
+              :color="
+                active(j, i)
+                  ? 'grey lighten-2'
+                  : displayJob($store.state.extra[i][j])
+              "
+              @click="ranged(j, i)"
+              @click.stop="showMenu"
+              >{{ displayShift(s) }}</v-btn
+            >
+          </span>
+          <v-divider></v-divider>
+        </div>
+      </div>
+      <v-menu
+        v-model="menu"
+        :position-x="x"
+        :position-y="y"
+        absolute
+        offset-y
+        :close-on-click="false"
+        :close-on-content-click="false"
+        z-index="13"
+      >
+        <v-list>
+          <div v-if="switches">
+            <v-list-item
+              v-for="(j, i) in fJob"
+              :key="i"
+              @click="updateSchedule(j.id, 'extra')"
+            >
+              <v-list-item-title>{{ j.job }}</v-list-item-title>
+            </v-list-item>
+          </div>
+          <div v-else>
+            <v-list-item
+              v-for="(s, i) in fShift"
+              :key="i"
+              @click="updateSchedule(s.id)"
+            >
+              <v-list-item-title>{{ s.kode }}</v-list-item-title>
+            </v-list-item>
+          </div>
+          <v-list-item @click="reset()"
+            ><v-icon color="error">mdi-close</v-icon></v-list-item
+          >
+        </v-list>
+      </v-menu>
     </div>
-    <v-menu
-      v-model="menu"
-      :position-x="x"
-      :position-y="y"
-      absolute
-      offset-y
-      :close-on-click="false"
-      :close-on-content-click="false"
-      z-index="13"
-      @keypress.delete="menu = false"
-    >
-      <v-list>
-        <v-list-item
-          v-for="(s, i) in fShift"
-          :key="i"
-          @click="updateSchedule(s.id)"
-        >
-          <v-list-item-title>{{ s.kode }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="reset()"
-          ><v-icon color="error">mdi-close</v-icon></v-list-item
-        >
-      </v-list>
-    </v-menu>
+    <v-row style="height: 50px" no-gutters align="center" justify="end">
+      <v-switch
+        v-model="switches"
+        inset
+        class="ma-0 pa-0 mr-4"
+        :hide-details="true"
+        color="teal"
+        label="Jobs"
+      ></v-switch>
+    </v-row>
   </v-card>
 </template>
 
@@ -107,12 +132,19 @@ export default {
       staff: undefined,
       menu: false,
       x: 0,
-      y: 0
+      y: 0,
+      switches: false
     }
   },
   computed: {
     fShift() {
       return [{ id: undefined, kode: undefined }, ...this.$store.state.shift]
+    },
+    fJob() {
+      return [
+        { id: undefined, job: undefined, color: 'white' },
+        ...this.$store.state.job
+      ]
     }
   },
   methods: {
@@ -157,11 +189,12 @@ export default {
       this.x = e.clientX
       this.y = e.clientY
     },
-    updateSchedule(s) {
+    updateSchedule(value, type = 'schedule') {
       this.$store.commit('updateSchedule', {
         staff: this.staff,
         day: this.day,
-        shift: s
+        value,
+        type
       })
       this.reset()
     },
@@ -175,6 +208,11 @@ export default {
       return this.$store.state.shift.find(
         (s) => parseInt(s.id) === parseInt(id)
       ).kode
+    },
+    displayJob(id) {
+      if (id === undefined) return 'white'
+      return this.$store.state.job.find((j) => parseInt(j.id) === parseInt(id))
+        .color
     },
     dayColor(d) {
       if (this.$store.state.weekend.includes(d)) return 'red'
