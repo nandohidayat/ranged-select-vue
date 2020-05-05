@@ -1,7 +1,7 @@
 <template>
   <v-card raised>
     <div
-      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 400px"
+      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 500px"
     >
       <div
         :style="{
@@ -18,25 +18,181 @@
           </v-btn>
           <v-divider></v-divider>
         </div>
-        <div v-for="(n, i) in $store.state.name" :key="i">
-          <v-btn
-            height="40"
-            width="200"
-            depressed
-            small
-            tile
-            color="white"
-            @click="nameClick(i)"
-            @click.stop="showMenu"
-          >
-            <span
-              class="d-inline-block text-truncate text-left"
-              style="width: 180px;"
+        <div>
+          <div v-for="(n, i) in name1" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i)"
+              @click.stop="showMenu"
             >
-              {{ n }}
-            </span>
-          </v-btn>
-          <v-divider></v-divider>
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 5">
+          <div v-for="(n, i) in name2" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 5)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 10">
+          <div v-for="(n, i) in name3" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 10)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 15">
+          <div v-for="(n, i) in name4" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 15)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 20">
+          <div v-for="(n, i) in name5" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 20)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 25">
+          <div v-for="(n, i) in name6" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 25)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 30">
+          <div v-for="(n, i) in name7" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 30)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.name.length > 35">
+          <div v-for="(n, i) in name8" :key="i">
+            <v-btn
+              height="40"
+              width="200"
+              depressed
+              small
+              tile
+              color="white"
+              @click="nameClick(i + 35)"
+              @click.stop="showMenu"
+            >
+              <span
+                class="d-inline-block text-truncate text-left"
+                style="width: 180px;"
+              >
+                {{ n }}
+              </span>
+            </v-btn>
+            <v-divider></v-divider>
+          </div>
         </div>
       </div>
       <div class="d-inline-block">
@@ -54,25 +210,181 @@
           </span>
           <v-divider></v-divider>
         </div>
-        <div v-for="(schedule, i) in $store.state.schedule" :key="i">
-          <span v-for="(s, j) in schedule" :key="j">
-            <v-btn
-              height="40px"
-              width="40px"
-              rounded
-              depressed
-              small
-              :color="
-                active(j, i)
-                  ? 'grey lighten-2'
-                  : displayJob($store.state.extra[i][j])
-              "
-              @click="ranged(j, i)"
-              @click.stop="showMenu"
-              >{{ displayShift(s) }}</v-btn
-            >
-          </span>
-          <v-divider></v-divider>
+        <div>
+          <div v-for="(schedule, i) in schedule1" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i][j])
+                "
+                @click="ranged(j, i)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 5">
+          <div v-for="(schedule, i) in schedule2" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 5)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 5][j])
+                "
+                @click="ranged(j, i + 5)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 10">
+          <div v-for="(schedule, i) in schedule3" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 10)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 10][j])
+                "
+                @click="ranged(j, i + 10)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 15">
+          <div v-for="(schedule, i) in schedule4" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 15)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 15][j])
+                "
+                @click="ranged(j, i + 15)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 20">
+          <div v-for="(schedule, i) in schedule5" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 20)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 20][j])
+                "
+                @click="ranged(j, i + 20)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 25">
+          <div v-for="(schedule, i) in schedule6" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 25)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 25][j])
+                "
+                @click="ranged(j, i + 25)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 30">
+          <div v-for="(schedule, i) in schedule7" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 30)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 30][j])
+                "
+                @click="ranged(j, i + 30)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
+        </div>
+        <div v-if="$store.state.schedule.length > 35">
+          <div v-for="(schedule, i) in schedule8" :key="i">
+            <span v-for="(s, j) in schedule" :key="j">
+              <v-btn
+                height="40px"
+                width="40px"
+                rounded
+                depressed
+                small
+                :color="
+                  active(j, i + 35)
+                    ? 'grey lighten-2'
+                    : displayJob($store.state.extra[i + 35][j])
+                "
+                @click="ranged(j, i + 35)"
+                @click.stop="showMenu"
+                >{{ displayShift(s) }}</v-btn
+              >
+            </span>
+            <v-divider></v-divider>
+          </div>
         </div>
       </div>
       <v-menu
@@ -145,6 +457,54 @@ export default {
         { id: undefined, job: undefined, color: 'white' },
         ...this.$store.state.job
       ]
+    },
+    name1() {
+      return this.$store.state.name.slice(0, 5)
+    },
+    name2() {
+      return this.$store.state.name.slice(5, 10)
+    },
+    name3() {
+      return this.$store.state.name.slice(10, 15)
+    },
+    name4() {
+      return this.$store.state.name.slice(15, 20)
+    },
+    name5() {
+      return this.$store.state.name.slice(20, 25)
+    },
+    name6() {
+      return this.$store.state.name.slice(25, 30)
+    },
+    name7() {
+      return this.$store.state.name.slice(30, 35)
+    },
+    name8() {
+      return this.$store.state.name.slice(35, 40)
+    },
+    schedule1() {
+      return this.$store.state.schedule.slice(0, 5)
+    },
+    schedule2() {
+      return this.$store.state.schedule.slice(5, 10)
+    },
+    schedule3() {
+      return this.$store.state.schedule.slice(10, 15)
+    },
+    schedule4() {
+      return this.$store.state.schedule.slice(15, 20)
+    },
+    schedule5() {
+      return this.$store.state.schedule.slice(20, 25)
+    },
+    schedule6() {
+      return this.$store.state.schedule.slice(25, 30)
+    },
+    schedule7() {
+      return this.$store.state.schedule.slice(30, 35)
+    },
+    schedule8() {
+      return this.$store.state.schedule.slice(35, 40)
     }
   },
   methods: {
