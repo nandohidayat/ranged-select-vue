@@ -1,7 +1,7 @@
 <template>
   <v-card raised>
     <div
-      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 400px"
+      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 500px"
     >
       <div
         :style="{
@@ -19,23 +19,11 @@
           <v-divider></v-divider>
         </div>
         <div v-for="(n, i) in $store.state.name" :key="i">
-          <v-btn
-            height="40"
-            width="200"
-            depressed
-            small
-            tile
-            color="white"
-            @click="nameClick(i)"
-            @click.stop="showMenu"
-          >
-            <span
-              class="d-inline-block text-truncate text-left"
-              style="width: 180px;"
-            >
-              {{ n }}
-            </span>
-          </v-btn>
+          <name-button
+            :name="n"
+            @click.native="nameClick(i)"
+            @click.native.stop="showMenu"
+          ></name-button>
           <v-divider></v-divider>
         </div>
       </div>
@@ -56,59 +44,25 @@
         </div>
         <div v-for="(schedule, i) in $store.state.schedule" :key="i">
           <span v-for="(s, j) in schedule" :key="j">
-            <v-btn
-              height="40px"
-              width="40px"
-              rounded
-              depressed
-              small
-              :color="
-                active(j, i)
-                  ? 'grey lighten-2'
-                  : displayJob($store.state.extra[i][j])
-              "
-              @click="ranged(j, i)"
-              @click.stop="showMenu"
-              >{{ displayShift(s) }}</v-btn
-            >
+            <shift-button
+              :schedule="s"
+              :additional="$store.state.additional[i][j]"
+              :active="active(j, i)"
+              @click.native="ranged(j, i)"
+              @click.native.stop="showMenu"
+            ></shift-button>
           </span>
           <v-divider></v-divider>
         </div>
       </div>
-      <v-menu
-        v-model="menu"
-        :position-x="x"
-        :position-y="y"
-        absolute
-        offset-y
-        :close-on-click="false"
-        :close-on-content-click="false"
-        z-index="13"
-      >
-        <v-list>
-          <div v-if="switches">
-            <v-list-item
-              v-for="(j, i) in fJob"
-              :key="i"
-              @click="updateSchedule(j.id, 'extra')"
-            >
-              <v-list-item-title>{{ j.job }}</v-list-item-title>
-            </v-list-item>
-          </div>
-          <div v-else>
-            <v-list-item
-              v-for="(s, i) in fShift"
-              :key="i"
-              @click="updateSchedule(s.id)"
-            >
-              <v-list-item-title>{{ s.kode }}</v-list-item-title>
-            </v-list-item>
-          </div>
-          <v-list-item @click="reset()"
-            ><v-icon color="error">mdi-close</v-icon></v-list-item
-          >
-        </v-list>
-      </v-menu>
+      <shift-menu
+        :staff.sync="staff"
+        :day.sync="day"
+        :menu.sync="menu"
+        :switches="switches"
+        :x="x"
+        :y="y"
+      ></shift-menu>
     </div>
     <v-row style="height: 50px" no-gutters align="center" justify="end">
       <v-switch
@@ -120,12 +74,28 @@
         label="Jobs"
       ></v-switch>
     </v-row>
+    <v-divider></v-divider>
+    <div class="text-center">
+      source code :
+      <a href="https://github.com/nandohidayat/ranged-select-vue"
+        >https://github.com/nandohidayat/ranged-select-vue</a
+      >
+    </div>
   </v-card>
 </template>
 
 <script>
+import ShiftButton from '@/components/ShiftButton'
+import ShiftMenu from '@/components/ShiftMenu'
+import NameButton from '@/components/NameButton'
+
 export default {
   layout: 'blank',
+  components: {
+    ShiftButton,
+    ShiftMenu,
+    NameButton
+  },
   data() {
     return {
       day: [],
@@ -134,17 +104,6 @@ export default {
       x: 0,
       y: 0,
       switches: false
-    }
-  },
-  computed: {
-    fShift() {
-      return [{ id: undefined, kode: undefined }, ...this.$store.state.shift]
-    },
-    fJob() {
-      return [
-        { id: undefined, job: undefined, color: 'white' },
-        ...this.$store.state.job
-      ]
     }
   },
   methods: {
@@ -175,7 +134,7 @@ export default {
       return false
     },
     nameClick(staff) {
-      if (this.staff !== undefined && this.staff === staff) {
+      if (this.staff === staff) {
         this.day = []
         this.staff = undefined
       } else {
@@ -188,31 +147,6 @@ export default {
       this.menu = true
       this.x = e.clientX
       this.y = e.clientY
-    },
-    updateSchedule(value, type = 'schedule') {
-      this.$store.commit('updateSchedule', {
-        staff: this.staff,
-        day: this.day,
-        value,
-        type
-      })
-      this.reset()
-    },
-    reset() {
-      this.menu = false
-      this.staff = undefined
-      this.day = []
-    },
-    displayShift(id) {
-      if (id === undefined) return
-      return this.$store.state.shift.find(
-        (s) => parseInt(s.id) === parseInt(id)
-      ).kode
-    },
-    displayJob(id) {
-      if (id === undefined) return 'white'
-      return this.$store.state.job.find((j) => parseInt(j.id) === parseInt(id))
-        .color
     },
     dayColor(d) {
       if (this.$store.state.weekend.includes(d)) return 'red'

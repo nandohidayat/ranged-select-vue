@@ -994,7 +994,7 @@ export const state = () => ({
       undefined
     ]
   ],
-  extra: [
+  additional: [
     [
       undefined,
       undefined,
