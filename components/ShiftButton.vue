@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    height="40px"
+    height="35px"
     width="40px"
     rounded
     depressed

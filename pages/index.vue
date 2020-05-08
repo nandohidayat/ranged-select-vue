@@ -1,7 +1,7 @@
 <template>
   <v-card raised>
     <div
-      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 500px"
+      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 450px"
     >
       <div
         :style="{
@@ -13,33 +13,33 @@
         class="shadow d-inline-block"
       >
         <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
-          <v-btn height="40" width="200" depressed small tile color="white">
+          <v-btn height="35" width="200" depressed small tile color="white">
             Nama
           </v-btn>
           <v-divider></v-divider>
         </div>
         <div v-for="(n, i) in $store.state.name" :key="i">
-          <name-button
-            :name="n"
+          <view-button
+            :value="n"
             @click.native="nameClick(i)"
             @click.native.stop="showMenu"
-          ></name-button>
+          ></view-button>
           <v-divider></v-divider>
         </div>
       </div>
       <div class="d-inline-block">
         <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <span v-for="d in $store.state.day" :key="d">
-            <v-btn
-              height="40px"
-              width="40px"
-              tile
-              depressed
-              small
-              :color="dayColor(d)"
-              >{{ d }}</v-btn
-            >
-          </span>
+          <v-btn
+            v-for="d in $store.state.day"
+            :key="d"
+            height="35px"
+            width="40px"
+            tile
+            depressed
+            small
+            :color="dayColor(d)"
+            >{{ d }}</v-btn
+          >
           <v-divider></v-divider>
         </div>
         <div v-for="(schedule, i) in $store.state.schedule" :key="i">
@@ -55,6 +55,28 @@
           <v-divider></v-divider>
         </div>
       </div>
+      <div class="d-inline-block">
+        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+          <v-btn height="35" width="120" depressed small tile color="white">
+            Total Jam
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(jam, i) in $store.state.jam" :key="i">
+          <v-btn
+            height="35"
+            width="120"
+            depressed
+            small
+            tile
+            color="white"
+            :ripple="false"
+          >
+            {{ jam }}
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+      </div>
       <shift-menu
         :staff.sync="staff"
         :day.sync="day"
@@ -64,7 +86,7 @@
         :y="y"
       ></shift-menu>
     </div>
-    <v-row style="height: 50px" no-gutters align="center" justify="end">
+    <v-row style="height: 40px" no-gutters align="center" justify="end">
       <v-switch
         v-model="switches"
         inset
@@ -72,6 +94,7 @@
         :hide-details="true"
         color="teal"
         label="Jobs"
+        dense
       ></v-switch>
     </v-row>
     <v-divider></v-divider>
@@ -87,14 +110,14 @@
 <script>
 import ShiftButton from '@/components/ShiftButton'
 import ShiftMenu from '@/components/ShiftMenu'
-import NameButton from '@/components/NameButton'
+import ViewButton from '@/components/ViewButton'
 
 export default {
   layout: 'blank',
   components: {
     ShiftButton,
     ShiftMenu,
-    NameButton
+    ViewButton
   },
   data() {
     return {
