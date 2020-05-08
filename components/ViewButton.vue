@@ -1,21 +1,14 @@
 <template>
   <v-btn
     height="35"
-    :width="width"
+    width="200"
     depressed
     small
     tile
     color="white"
-    :ripple="ripple"
+    :ripple="false"
   >
-    <span
-      v-if="!center"
-      class="d-inline-block text-truncate text-left"
-      style="width: 180px;"
-    >
-      {{ value }}
-    </span>
-    <span v-else>
+    <span class="d-inline-block text-truncate text-left" style="width: 180px;">
       {{ value }}
     </span>
   </v-btn>
@@ -27,18 +20,6 @@ export default {
     value: {
       type: String,
       default: undefined
-    },
-    center: {
-      type: Boolean,
-      default: false
-    },
-    ripple: {
-      type: Boolean,
-      default: false
-    },
-    width: {
-      type: Number,
-      default: 200
     }
   }
 }

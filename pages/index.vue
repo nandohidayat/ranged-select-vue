@@ -33,25 +33,25 @@
             v-for="d in $store.state.day"
             :key="d"
             height="35px"
-            width="40px"
+            width="35px"
             tile
             depressed
             small
-            :color="dayColor(d)"
+            :color="$store.getters.dayColor(d)"
             >{{ d }}</v-btn
           >
           <v-divider></v-divider>
         </div>
         <div v-for="(schedule, i) in $store.state.schedule" :key="i">
-          <span v-for="(s, j) in schedule" :key="j">
-            <shift-button
-              :schedule="s"
-              :additional="$store.state.additional[i][j]"
-              :active="active(j, i)"
-              @click.native="ranged(j, i)"
-              @click.native.stop="showMenu"
-            ></shift-button>
-          </span>
+          <shift-button
+            v-for="(s, j) in schedule"
+            :key="j"
+            :schedule="s"
+            :additional="$store.state.additional[i][j]"
+            :active="active(j, i)"
+            @click.native="ranged(j, i)"
+            @click.native.stop="showMenu"
+          ></shift-button>
           <v-divider></v-divider>
         </div>
       </div>
@@ -170,11 +170,6 @@ export default {
       this.menu = true
       this.x = e.clientX
       this.y = e.clientY
-    },
-    dayColor(d) {
-      if (this.$store.state.weekend.includes(d)) return 'red'
-      if (this.$store.state.holiday.includes(d)) return 'red lighten-3'
-      return 'white'
     }
   }
 }

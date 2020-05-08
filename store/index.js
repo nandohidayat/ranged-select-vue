@@ -2028,3 +2028,20 @@ export const mutations = {
     }
   }
 }
+
+export const getters = {
+  fShift: (state) => {
+    return [{ id: undefined, kode: undefined }, ...state.shift]
+  },
+  fJob: (state) => {
+    return [{ id: undefined, job: undefined, color: 'white' }, ...state.job]
+  },
+  color: (state) => (id) => {
+    return state.job.find((j) => parseInt(j.id) === id).color
+  },
+  dayColor: (state) => (id) => {
+    if (state.weekend.includes(id)) return 'red'
+    if (state.holiday.includes(id)) return 'red lighten-3'
+    return 'white'
+  }
+}

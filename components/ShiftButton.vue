@@ -1,7 +1,7 @@
 <template>
   <v-btn
     height="35px"
-    width="40px"
+    width="35px"
     rounded
     depressed
     small
@@ -42,9 +42,7 @@ export default {
         return 'grey lighten-2'
       }
       if (this.additional) {
-        return this.$store.state.job.find(
-          (j) => parseInt(j.id) === this.additional
-        ).color
+        return this.$store.getters.color(this.additional)
       }
       return 'white'
     }

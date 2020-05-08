@@ -9,11 +9,12 @@
     :close-on-content-click="false"
     z-index="13"
   >
-    <v-list>
+    <v-list dense>
       <div v-if="switches">
         <v-list-item
-          v-for="(j, i) in fJob"
+          v-for="(j, i) in $store.getters.fJob"
           :key="i"
+          dense
           @click="updateSchedule(j.id, 'additional')"
         >
           <v-list-item-title>{{ j.job }}</v-list-item-title>
@@ -21,14 +22,15 @@
       </div>
       <div v-else>
         <v-list-item
-          v-for="(s, i) in fShift"
+          v-for="(s, i) in $store.getters.fShift"
           :key="i"
+          dense
           @click="updateSchedule(s.id)"
         >
           <v-list-item-title>{{ s.kode }}</v-list-item-title>
         </v-list-item>
       </div>
-      <v-list-item @click="reset()"
+      <v-list-item dense @click="reset()"
         ><v-icon color="error">mdi-close</v-icon></v-list-item
       >
     </v-list>
@@ -61,17 +63,6 @@ export default {
     y: {
       type: Number,
       default: 0
-    }
-  },
-  computed: {
-    fShift() {
-      return [{ id: undefined, kode: undefined }, ...this.$store.state.shift]
-    },
-    fJob() {
-      return [
-        { id: undefined, job: undefined, color: 'white' },
-        ...this.$store.state.job
-      ]
     }
   },
   methods: {
